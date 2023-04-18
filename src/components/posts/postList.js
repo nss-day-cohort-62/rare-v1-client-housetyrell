@@ -24,6 +24,7 @@ export const PostList = () => {
                         <Post
                             key={post.id}
                             post={post}
+                            myListOrMain={false}
                         />
                     </>
                 })

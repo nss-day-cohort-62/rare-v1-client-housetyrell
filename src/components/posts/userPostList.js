@@ -5,7 +5,6 @@ import { getPosts, deletePost, updatePost } from "./postManager";
 
 export const MyPostList = () => {
     const [posts, setPosts] = useState([])
-    const [updatePost, setUpdatePost] = useState(false)
     const [renderSwitch, setSwitch] = useState(false)
     const localUser = localStorage.getItem('auth_token')
     const localUserObj = JSON.parse(localUser)
@@ -28,14 +27,9 @@ export const MyPostList = () => {
     //         content: post.content,
     //         approved: true
     // }
-    const updatePostFunction = () => {
-        return <>
-        <section>
-        </section>
-        </>
-    }
-
     
+
+
     return <>
         <h2>this works for my posts</h2>
         <article>
@@ -45,19 +39,8 @@ export const MyPostList = () => {
                         <Post
                             key={post.id}
                             post={post}
+                            myListOrMain={true}
                         />
-                        <button onClick={
-                            () => {
-                                setUpdatePost(true)
-                            }
-                        }>Edit</button>
-                        <button onClick={
-                            ()=> {
-                                if (window.confirm("are you sure?")) {
-                                    deletePost(post.id).then(() => setSwitch(!renderSwitch))
-                                }
-                            }
-                        }>Delete</button>
                     </>
                 })
             }

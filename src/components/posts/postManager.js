@@ -17,11 +17,12 @@ export const addPost = (newPost) => {
   })
 };
 
-export const updatePost = (postId, newPost) => {
-    return fetch(`http://localhost:8088/posts/${postId}`, {
+export const updatePost = (newPost) => {
+    return fetch(`http://localhost:8088/posts/${newPost.id}`, {
         method: "PUT",
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Accept": "application/json"
         },
         body: JSON.stringify(newPost)
     })
