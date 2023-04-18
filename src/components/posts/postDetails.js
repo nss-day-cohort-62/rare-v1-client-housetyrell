@@ -14,7 +14,6 @@ export const PostDetails = () => {
         },
         [postId]
     )
-    console.log(postId)
     return <>
         <section className="individualPost">
             <h2>{post.title}</h2>
