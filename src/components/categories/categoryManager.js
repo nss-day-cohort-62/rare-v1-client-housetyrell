@@ -11,5 +11,4 @@ export const addCategory = (category) => {
         },
         body: JSON.stringify(category)
     })
-    .then(res => res.json())
 }

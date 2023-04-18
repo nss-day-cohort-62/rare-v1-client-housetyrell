@@ -32,7 +32,7 @@ export const TagForm = ({getAllTags}) => {
       <fieldset>
         <div className="">
           <label htmlFor="name">Label: </label>
-          <input type="text" name="name" required autoFocus className="form-control"
+          <input type="text" name="label" required autoFocus className="form-control"
             placeholder="Tag label"
             onChange={handleControlledInputChange}
           />

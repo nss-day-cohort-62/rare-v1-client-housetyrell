@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { addCategory } from "./categoryManager"
+import { addCategory, getCategories } from "./categoryManager"
 
 
 
@@ -22,7 +22,7 @@ export const CategoryForm = ({GetAllCategories}) => {
             addCategory({
              label: category.label
             })
-              .then(() => GetAllCategories())
+            .then(res => res.json()).then(() => GetAllCategories())
           }
         }
       
