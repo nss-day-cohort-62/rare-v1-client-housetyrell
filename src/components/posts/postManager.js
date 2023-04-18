@@ -28,7 +28,7 @@ export const updatePost = (postId, newPost) => {
 }
 
 export const deletePost = (postId) => {
-  return fetch(`http://localhost:8088/posts${postId}`, {
+  return fetch(`http://localhost:8088/posts/${postId}`, {
     method: "DELETE"
   });
 };

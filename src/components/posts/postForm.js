@@ -8,6 +8,7 @@ import { getPosts } from "./postManager";
 export const PostForm = () => {
   const [post, setPost] = useState({});
   const [users, setUsers] = useState([]);
+  const [isLoading, setIsLoading] = useState(true)
   const [categories, setCategories] = useState([]);
   const [posts, setPosts] = useState([]);
   const navigate = useNavigate();
@@ -25,10 +26,10 @@ export const PostForm = () => {
   }, []);
 
   useEffect(() => {
-    getPosts()
-    .then((data) => {
-      setPosts(data)
-    })
+   getPosts().then((data) => { setPosts(data) })
+    
+      
+    
   },[])
 
   const handleControlledInputChange = (event) => {
@@ -37,21 +38,19 @@ export const PostForm = () => {
     setPost(newPost);
   };
   const CreateNewPost = () => {
+    
     addPost({
       user_id: localUserObj,
-      category_id: post.category_id,
+      category_id: parseInt(post.category_id),
       title: post.title,
-      publication_date: new Date().toLocaleDateString,
+      publication_date: new Date().toLocaleDateString(),
       image_url: post.image_url,
       content: post.content,
-      approved: true
+      approved: 1
     })
-    .then((post) => {
-      // const lastIndex = posts.length + 1;
-      // const newPostId = posts[lastIndex];
-      navigate(`/postDetails/${post.id}`);
-    }
-    );
+    .then(res => res.json()).then((data) => navigate(`/postDetails/${data.id}`))
+    
+    ;
   };
 
   return (
@@ -62,9 +61,10 @@ export const PostForm = () => {
           <div className="">
             <label htmlFor="">Category</label>
             <select name="category_id" onChange={handleControlledInputChange}>
+              <option value ="0"> Choose a category</option>
               {categories.map((category) => {
                 return (
-                  <option key={category.id} value={category.id}>
+                  <option key={category.id} value={parseInt(category.id)}>
                     {category.label}
                   </option>
                 );
@@ -107,7 +107,7 @@ export const PostForm = () => {
             <label htmlFor="content">Your Post Here</label>
             <input
               type="text"
-              name="post_url"
+              name="content"
               required
               autoFocus
               className="form-control"
@@ -121,6 +121,7 @@ export const PostForm = () => {
           type="submit"
           onClick={(evt) => {
             evt.preventDefault();
+            setIsLoading(false)
             CreateNewPost();
           }}
           className="btn btn-primary"
