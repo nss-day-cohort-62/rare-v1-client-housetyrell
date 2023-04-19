@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { addPost } from "./postManager";
 import { getCategories } from "../categories/categoryManager";
 import { getAllUsers } from "../users/UserManager";
-import { getPosts } from "./postManager";
+import { getPosts, getPostById, updatePost } from "./postManager";
 
 export const PostForm = () => {
+  const { postId } = useParams()
   const [post, setPost] = useState({});
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(true)
@@ -26,11 +27,24 @@ export const PostForm = () => {
   }, []);
 
   useEffect(() => {
-   getPosts().then((data) => { setPosts(data) })
-    
-      
-    
-  },[])
+    getPosts().then((data) => { setPosts(data) })
+
+
+
+  }, [])
+
+  useEffect(
+    () => {
+      if (postId) {
+        getPostById(postId)
+          .then(
+            (data) => {
+              setPost(data)
+            }
+          )
+      }
+    }, [postId]
+  )
 
   const handleControlledInputChange = (event) => {
     const newPost = { ...post };
@@ -38,30 +52,42 @@ export const PostForm = () => {
     setPost(newPost);
   };
   const CreateNewPost = () => {
-    
-    addPost({
-      user_id: localUserObj,
-      category_id: parseInt(post.category_id),
-      title: post.title,
-      publication_date: new Date().toLocaleDateString(),
-      image_url: post.image_url,
-      content: post.content,
-      approved: 1
-    })
-    .then(res => res.json()).then((data) => navigate(`/postDetails/${data.id}`))
-    
-    ;
+    if (postId) {
+      // PUT
+      updatePost({
+        id: post.id,
+        user_id: localUserObj,
+        category_id: post.category_id,
+        title: post.title,
+        publication_date: post.publication_date,
+        image_url: post.image_url,
+        content: post.content
+      })
+       .then(() => navigate(`/postDetails/${postId}`))
+    }
+    else {
+      addPost({
+        user_id: localUserObj,
+        category_id: parseInt(post.category_id),
+        title: post.title,
+        publication_date: new Date().toLocaleDateString(),
+        image_url: post.image_url,
+        content: post.content,
+        approved: 1
+      })
+        .then(res => res.json()).then((data) => navigate(`/postDetails/${data.id}`))
+    };
   };
 
   return (
     <>
       <form>
-        <h2>Create a Post</h2>
+        <h2>{postId ? "Update Post" : "Create New Post"}</h2>
         <fieldset>
           <div className="">
             <label htmlFor="">Category</label>
-            <select name="category_id" onChange={handleControlledInputChange}>
-              <option value ="0"> Choose a category</option>
+            <select name="category_id" value={post.category_id} onChange={handleControlledInputChange}>
+              <option value="0"> Choose a category</option>
               {categories.map((category) => {
                 return (
                   <option key={category.id} value={parseInt(category.id)}>
@@ -83,6 +109,7 @@ export const PostForm = () => {
               autoFocus
               className="form-control"
               placeholder="Post Title "
+              defaultValue={post.title}
               onChange={handleControlledInputChange}
             />
           </div>
@@ -95,6 +122,7 @@ export const PostForm = () => {
               name="image_url"
               required
               autoFocus
+              defaultValue={post.image_url}
               className="form-control"
               placeholder="Image URL"
               onChange={handleControlledInputChange}
@@ -110,6 +138,7 @@ export const PostForm = () => {
               name="content"
               required
               autoFocus
+              defaultValue={post.content}
               className="form-control"
               placeholder="Content"
               onChange={handleControlledInputChange}
@@ -126,7 +155,7 @@ export const PostForm = () => {
           }}
           className="btn btn-primary"
         >
-          Create a Post
+          {postId ? "Save Updates" : "Make A New Post"}
         </button>
       </form>
     </>
