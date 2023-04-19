@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react"
 import { getAllUsers } from "./UserManager"
+import { Link } from "react-router-dom"
+import "./users.css"
 
 export const UserList = () => {
     const [users, setUsers] = useState([])
@@ -14,12 +16,11 @@ export const UserList = () => {
         {
             users.map((user) => {
                 return(
-                    <>
-                    <div>{user.username}</div>
-                    <div>{user.first_name}</div>
-                    <div>{user.last_name}</div>
+                    <div className="individual_user">
+                     <h2>{user.username}</h2> 
+                    <Link to={`/userDetails/${user.id}`}><div>{user.first_name} {user.last_name}</div> </Link>
                     <div>{user.email}</div>
-                    </>
+                    </div>
                 )
             })
         }

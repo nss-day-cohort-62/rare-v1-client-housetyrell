@@ -4,6 +4,8 @@ import { addPost } from "./postManager";
 import { getCategories } from "../categories/categoryManager";
 import { getAllUsers } from "../users/UserManager";
 import { getPosts, getPostById, updatePost } from "./postManager";
+//import { getTags, getPostTags, createPostTags } from "../tags/tagManager";
+
 
 export const PostForm = () => {
   const { postId } = useParams()
@@ -12,6 +14,8 @@ export const PostForm = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [categories, setCategories] = useState([]);
   const [posts, setPosts] = useState([]);
+  // const [tags, setTags] = useState([]);
+  // const [postTags, setPostTags] = useState([];)
   const navigate = useNavigate();
   const localUser = localStorage.getItem("auth_token");
   const localUserObj = JSON.parse(localUser);
@@ -24,6 +28,14 @@ export const PostForm = () => {
     getCategories().then((data) => {
       setCategories(data);
     });
+
+    // getTags().then((data) => {
+    //   setTags(data);
+    // })
+
+    // getPostTags().then((data) => {
+    //   setPostTags(data);
+    // });
   }, []);
 
   useEffect(() => {
@@ -146,6 +158,15 @@ export const PostForm = () => {
             />
           </div>
         </fieldset>
+        {/* <fieldset>
+          <div>
+            {tags.map((tag) => {
+              return (
+                {tag.label} <input type="checkbox" key={tag.id} value={parseInt(tag.id)} onClick={() =>  {}}/>
+              )
+            })}
+          </div>
+        </fieldset> */}
 
         <button
           type="submit"
