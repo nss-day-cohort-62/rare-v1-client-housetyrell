@@ -2,11 +2,9 @@ import { useEffect, useState } from "react"
 import { useParams, Link } from "react-router-dom"
 import { Post } from "./post"
 import { getPostById } from "./postManager"
-//import { getPostTags } from "../tags/tagManager";
 export const PostDetails = () => {
     const { postId } = useParams()
     const [post, setPost] = useState({})
-    // const [postTags, setPostTags] = useState([])
     useEffect(
         () => {
             getPostById(parseInt(postId))
@@ -17,15 +15,7 @@ export const PostDetails = () => {
         [postId]
     )
 
-    // useEffect(
-    //     () => {
-    //         getPostTags().then((tags) => {
-    //              const filteredTags = tags.filter((tag) => tag.post_id === postId)
-    //              setPostTags(filteredTags)
-    //             })
-    //     },
-    //     [postId]
-    // )
+   
 
 
     return <>
@@ -35,15 +25,14 @@ export const PostDetails = () => {
             <div>{post.publication_date}</div>
             <div>{post.category?.label}</div>
             <p>{post.content}</p>
-            {/* <div>
             {
-                postTags.map((postTag) => {
-                    return (
-                        {postTag.tag?.label}
-                    )
+                post?.post_with_tags?.map((tag) => {
+                    return <>
+                    <div>{tag.label}</div>
+                    </>
                 })
             }
-            </div>  */}
+            <Link to={`/comments/${postId}`}>View Comments</Link>
         </section>
     </>
 }

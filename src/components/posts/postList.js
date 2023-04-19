@@ -5,6 +5,8 @@ import { getCategories } from "../categories/categoryManager";
 import { GetPostsByCategory } from "./postManager";
 import { getAllUsers } from "../users/UserManager";
 import { GetPostsByUser } from "./postManager";
+import {getPostsBySearch} from "./postManager";
+import { PostSearch } from "./postSearch";
 
 export const PostList = () => {
     const [posts, setPosts] = useState([])
@@ -12,6 +14,7 @@ export const PostList = () => {
     const [users, setUsers] = useState([])
     const [selectedCategory, setSelectedCategory] = useState(0)
     const [selectedAuthor, setSelectedAuthor] = useState(0)
+    const [searchTerm, setSearchTerm] = useState('')
     useEffect(
         () => {
             getPosts()
@@ -51,8 +54,19 @@ export const PostList = () => {
             }
         }, [selectedCategory, selectedAuthor]
     )
+    useEffect(() => {
+        if (searchTerm.length > 1) {
+          getPostsBySearch(searchTerm).then((posts) => setPosts(posts))
+        } else {
+          getPosts().then((posts) => setPosts(posts))
+        }
+      }, [searchTerm])
+    
+      const onSearchTermChange = (value) => {
+        setSearchTerm(value)
+      }
     return <>
-        <h2>this works</h2>
+       <PostSearch onSearchTermChange={onSearchTermChange} searchTerm={searchTerm} />
         <section>
             <select name="category_id" onChange={(evt) => setSelectedCategory(evt.target.value)}>
                 <option value="0">Filter by category</option>
