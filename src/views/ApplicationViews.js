@@ -13,6 +13,7 @@ import { UserList } from "../components/users/userList"
 import { PostForm } from "../components/posts/postForm"
 import { UserDetails } from "../components/users/userDetails"
 import { PostSubscriptions } from "../components/posts/subscribedPosts"
+import { PostComments } from "../components/posts/PostComments"
 
 export const ApplicationViews = ({ token, setToken }) => {
   return <>
@@ -31,6 +32,7 @@ export const ApplicationViews = ({ token, setToken }) => {
       <Route path="/users" element={<UserList />} />
       <Route path="/edit/:postId" element={<PostForm />} />
       <Route path="/userDetails/:userId" element={<UserDetails />} />
+      <Route path="/comments/:postId" element={<PostComments />} />
       </Route>
     </Routes>
   </>

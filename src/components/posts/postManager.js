@@ -33,7 +33,9 @@ export const deletePost = (postId) => {
     method: "DELETE"
   });
 };
-
+export const getPostsBySearch = (searchTerm) => {
+  return fetch(`http://localhost:8088/posts?search=${searchTerm}`).then(res => res.json())
+}
 export const GetPostsByCategory = (id) => {
   return fetch(`http://localhost:8088/posts?category_id=${id}`).then((res) => res.json());
 }
@@ -44,3 +46,6 @@ export const GetPostsByUser = (id) => {
 export const GetAllSubscriptions = (userId) => {
   return fetch(`http://localhost:8088/subscriptions?follower_id=${userId}`).then((res) => res.json());
 }
+// export const GetPostsByTag = (id) => {
+//   return fetch(`http://localhost:8088/posts?tag=${id}`).then((res) => res.json());
+// }
