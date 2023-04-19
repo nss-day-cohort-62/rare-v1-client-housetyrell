@@ -33,3 +33,10 @@ export const deletePost = (postId) => {
     method: "DELETE"
   });
 };
+
+export const GetPostsByCategory = (id) => {
+  return fetch(`http://localhost:8088/posts?category_id=${id}`).then((res) => res.json());
+}
+export const GetPostsByUser = (id) => {
+  return fetch(`http://localhost:8088/posts?user_id=${id}`).then((res) => res.json());
+}
