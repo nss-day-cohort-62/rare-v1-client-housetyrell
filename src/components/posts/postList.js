@@ -33,13 +33,13 @@ export const PostList = () => {
 
     useEffect(
         () => { 
-        if (selectedCategory !== 0) {
-                GetPostsByCategory(selectedCategory).then((data) => {
+        if (parseInt(selectedCategory) !== 0) {
+                GetPostsByCategory(parseInt(selectedCategory)).then((data) => {
                     setPosts(data)
                 })
             }
-        else if(selectedAuthor !==0){
-                GetPostsByUser(selectedAuthor).then((data) => {
+        else if(parseInt(selectedAuthor) !==0){
+                GetPostsByUser(parseInt(selectedAuthor)).then((data) => {
                     setPosts(data)
                 })
            }
@@ -49,7 +49,7 @@ export const PostList = () => {
                 setPosts(data)
             })
             }
-        }, [selectedCategory]
+        }, [selectedCategory, selectedAuthor]
     )
     return <>
         <h2>this works</h2>

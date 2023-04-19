@@ -1,7 +1,7 @@
 import { CategoryForm } from "./categoryForm";
 import { getCategories } from "./categoryManager";
 import { useEffect, useState } from "react";
-
+import "./categories.css"
 export const CategoryList = () => {
   const [categories, setCategories] = useState([]);
 

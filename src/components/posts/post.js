@@ -35,6 +35,7 @@ export const Post = ({ post, myListOrMain }) => {
             <div>{post.user?.first_name} {post.user?.last_name}</div>
             <div>{post.publication_date}</div>
             <div>{post.category?.label}</div>
+            {/* <div>{post}</div> */}
             {parseInt(localUserObj) === post.user_id && myListOrMain === true ?
                 <>
                     <button onClick={

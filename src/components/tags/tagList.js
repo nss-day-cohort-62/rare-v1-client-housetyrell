@@ -15,22 +15,23 @@ export const TagList = () => {
     const getAllTags = () => {
         getTags().then((data) => {
             setTags(data);
-      })}
+        })
+    }
 
     return <>
-    <div>
-    {
-        tags.map((tag) => {
-            return <>
-            <div>{tag.label}</div>
-            <button>Edit</button>
-            <button>Delete</button>
-            </>
-        })
-}
-</div>
-<div>
-        <TagForm  getAllTags ={getAllTags}/>
-      </div>
-</>
+        <div>
+            {
+                tags.map((tag) => {
+                    return <>
+                        <div>{tag.label}</div>
+                        <button>Edit</button>
+                        <button>Delete</button>
+                    </>
+                })
+            }
+        </div>
+        <div>
+            <TagForm getAllTags={getAllTags} />
+        </div>
+    </>
 }
