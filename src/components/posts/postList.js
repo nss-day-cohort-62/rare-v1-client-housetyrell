@@ -67,6 +67,7 @@ export const PostList = () => {
             }
         }, [selectedCategory, selectedAuthor, selectedTag]
     )
+
     useEffect(() => {
         if (searchTerm.length > 1) {
           getPostsBySearch(searchTerm).then((posts) => setPosts(posts))

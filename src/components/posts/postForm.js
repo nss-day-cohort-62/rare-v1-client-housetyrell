@@ -23,7 +23,7 @@ export const PostForm = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [categories, setCategories] = useState([]);
   const [tags, setTags] = useState([]);
-  // const [postTags, setPostTags] = useState([];)
+  const [postTags, setPostTags] = useState([])
   const navigate = useNavigate();
   const localUser = localStorage.getItem("auth_token");
   const localUserObj = JSON.parse(localUser);
@@ -47,20 +47,42 @@ export const PostForm = () => {
     if (postId) {
       getPostById(postId).then((data) => {
         setPost(data);
+        setPostTags(data.post_tags)
       });
     }
   }, [postId]);
-  
+
+
+  const CheckIfChecked = (tag)=> {
+    const checked = post.post_tags.find((postTag) => tag.id === postTag.id)
+    
+      return checked
+    
+  }
   const handleControlledInputChange = (event) => {
     const newPost = { ...post };
-    if (event.target.name === "post_tags") {    
-      newPost[event.target.name].push(parseInt(event.target.value))}
-    else {
       newPost[event.target.name] = event.target.value;
-    }
-    
     setPost(newPost);
   };
+ 
+  const tagPushOrPull = (event) => {
+    const newPost = {...post}
+    if (event.target.name === "post_tags") {
+      // console.log(postTags)
+      // const selectedTag = postTags.find((tag) => tag === event.target.value)
+      // console.log(selectedTag)
+      console.log(postTags)
+      if (postTags.includes(event.target.value)) {
+        const index = post.post_tags.indexOf(event.target.value);
+        newPost.post_tags.splice(index, 1);
+      } else {
+        newPost[event.target.name].push(parseInt(event.target.value))
+      }
+       }    
+       setPost(newPost)
+      }
+
+      
   const CreateNewPost = () => {
     if (postId) {
       // PUT
@@ -73,7 +95,7 @@ export const PostForm = () => {
         image_url: post.image_url,
         content: post.content,
         approved: 1,
-        post_with_tags: post.post_tags
+        post_tags: post.post_tags
       }).then(() => navigate(`/postDetails/${postId}`));
     } else {
       addPost({
@@ -84,7 +106,7 @@ export const PostForm = () => {
         image_url: post.image_url,
         content: post.content,
         approved: 1,
-        post_with_tags: post.post_tags
+        post_tags: post.post_tags
       })
         .then((res) => res.json())
         .then((data) => navigate(`/postDetails/${data.id}`));
@@ -171,9 +193,11 @@ export const PostForm = () => {
                     name = "post_tags"
                     type="checkbox"
                     key={tag.id}
-                    value={parseInt(tag.id)}
-                    onChange={handleControlledInputChange}
+                    checked ={CheckIfChecked(tag)}
+                    value={tag.id}
+                    onChange={(event) =>  tagPushOrPull(event)}
                   />
+                  {CheckIfChecked(tag)}
                 </>
               );
             })}
