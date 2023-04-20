@@ -42,6 +42,9 @@ export const GetPostsByCategory = (id) => {
 export const GetPostsByUser = (id) => {
   return fetch(`http://localhost:8088/posts?user_id=${id}`).then((res) => res.json());
 }
+export const GetPostsByTag = (id) => {
+  return fetch(`http://localhost:8088/posts?tag_id=${id}`).then((res) => res.json());
+}
 
 export const GetAllSubscriptions = (userId) => {
   return fetch(`http://localhost:8088/subscriptions?follower_id=${userId}`).then((res) => res.json());
@@ -49,3 +52,8 @@ export const GetAllSubscriptions = (userId) => {
 // export const GetPostsByTag = (id) => {
 //   return fetch(`http://localhost:8088/posts?tag=${id}`).then((res) => res.json());
 // }
+export const deleteSubscription = (id) => {
+  return fetch(`http://localhost:8088/subscriptions/${id}`, {
+    method: "DELETE"
+  });
+};

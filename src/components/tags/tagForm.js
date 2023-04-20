@@ -1,29 +1,29 @@
 import { useState, useEffect } from "react"
 import { createTag } from "./tagManager"
 
-export const TagForm = ({getAllTags}) => {
+export const TagForm = ({ getAllTags }) => {
   const [tag, setTag] = useState({})
 
-  
+
   const handleControlledInputChange = (event) => {
-    const newTag = {...tag}
+    const newTag = { ...tag }
     newTag[event.target.name] = event.target.value
     setTag(newTag)
   }
 
-   const createNewTag = () => {
-        if (tag.label === "") {
-            window.alert("Please provide a label")
-          } 
-          else {
-              createTag({
-               label: tag.label
-              })
-              .then(() => getAllTags())
-            }
-          }
-        
-    
+  const createNewTag = () => {
+    if (tag.label === "") {
+      window.alert("Please provide a label")
+    }
+    else {
+      createTag({
+        label: tag.label
+      })
+        .then(() => getAllTags())
+    }
+  }
+
+
 
 
   return <>

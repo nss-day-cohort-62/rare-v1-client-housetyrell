@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { Post } from "./post";
 import { getPosts } from "./postManager";
+import {getTags} from "../tags/tagManager";
+import {GetPostsByTag} from "./postManager"
 import { getCategories } from "../categories/categoryManager";
 import { GetPostsByCategory } from "./postManager";
 import { getAllUsers } from "../users/UserManager";
@@ -12,8 +14,10 @@ export const PostList = () => {
     const [posts, setPosts] = useState([])
     const [categories, setCategories] = useState([])
     const [users, setUsers] = useState([])
+    const [tags, setTags] = useState([])
     const [selectedCategory, setSelectedCategory] = useState(0)
     const [selectedAuthor, setSelectedAuthor] = useState(0)
+    const [selectedTag, setSelectedTag] = useState(0)
     const [searchTerm, setSearchTerm] = useState('')
     useEffect(
         () => {
@@ -28,14 +32,18 @@ export const PostList = () => {
             getAllUsers()
                 .then(userData => {
                     setUsers(userData)
-                }
-            )
+                })
+            getTags()
+                .then((data) => {
+                    setTags(data)
+                })
         },
         []
     )
 
     useEffect(
         () => { 
+            
         if (parseInt(selectedCategory) !== 0) {
                 GetPostsByCategory(parseInt(selectedCategory)).then((data) => {
                     setPosts(data)
@@ -46,13 +54,18 @@ export const PostList = () => {
                     setPosts(data)
                 })
            }
+        else if(parseInt(selectedTag) !==0){
+                GetPostsByTag(parseInt(selectedTag)).then((data) => {
+                    setPosts(data)
+            })
+       }
         else {
             getPosts()
                 .then(data => {
                 setPosts(data)
             })
             }
-        }, [selectedCategory, selectedAuthor]
+        }, [selectedCategory, selectedAuthor, selectedTag]
     )
     useEffect(() => {
         if (searchTerm.length > 1) {
@@ -89,6 +102,20 @@ export const PostList = () => {
                         return (
                             <option key={user.id} value={parseInt(user.id)}>
                                 {user.first_name}
+                            </option>
+                        )
+                    })
+                }
+            </select>
+        </section>
+        <section>
+            <select name="tag_id" onChange={(evt) => setSelectedTag(evt.target.value)}>
+                <option value="0">Filter by Tag</option>
+                {
+                    tags.map(tag => {
+                        return (
+                            <option key={tag.id} value={parseInt(tag.id)}>
+                                {tag.label}
                             </option>
                         )
                     })
