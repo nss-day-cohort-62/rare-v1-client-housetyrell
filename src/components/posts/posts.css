@@ -2,3 +2,12 @@
     margin: 2em;
     border: 1px solid orange;
 }
+.trash {
+    height: 1em;
+    cursor: pointer;
+}
+
+.myComment {
+    display: flex;
+    align-items: center;
+}

@@ -73,7 +73,7 @@ export const PostForm = () => {
         image_url: post.image_url,
         content: post.content,
         approved: 1,
-        post_tags: post.post_tags
+        post_with_tags: post.post_tags
       }).then(() => navigate(`/postDetails/${postId}`));
     } else {
       addPost({
@@ -84,7 +84,7 @@ export const PostForm = () => {
         image_url: post.image_url,
         content: post.content,
         approved: 1,
-        post_tags: post.post_tags
+        post_with_tags: post.post_tags
       })
         .then((res) => res.json())
         .then((data) => navigate(`/postDetails/${data.id}`));
