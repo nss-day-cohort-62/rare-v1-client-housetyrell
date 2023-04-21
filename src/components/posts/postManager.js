@@ -46,6 +46,10 @@ export const GetPostsByTag = (id) => {
   return fetch(`http://localhost:8088/posts?tag_id=${id}`).then((res) => res.json());
 }
 
+export const getPostsByHttpString = (httpString) => {
+  return fetch(`http://localhost:8088/posts?${httpString}`).then((res) => res.json());
+}
+
 export const GetAllSubscriptions = (userId) => {
   return fetch(`http://localhost:8088/subscriptions?follower_id=${userId}`).then((res) => res.json());
 }
@@ -57,3 +61,4 @@ export const deleteSubscription = (id) => {
     method: "DELETE"
   });
 };
+

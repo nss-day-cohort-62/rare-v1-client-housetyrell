@@ -28,6 +28,12 @@ export const PostForm = () => {
   const localUser = localStorage.getItem("auth_token");
   const localUserObj = JSON.parse(localUser);
 
+  //need state variable to fill in checked value on checkboxes
+  //need to have state based array that watches for incoming posttags on post and populating with values
+  //need a function to set checkbox to true if evt.target.value is in state based post tag array
+  //need function to watch whether checked is true and add evt.target.value to state based array
+  //need to have state based array added to updated object upon submission
+
   useEffect(() => {
     getAllUsers().then((data) => {
       setUsers(data);
@@ -193,9 +199,9 @@ export const PostForm = () => {
                     name = "post_tags"
                     type="checkbox"
                     key={tag.id}
-                    checked ={CheckIfChecked(tag)}
+                    checked ={CheckIfChecked(tag)}//checked based on boolean state variable
                     value={tag.id}
-                    onChange={(event) =>  tagPushOrPull(event)}
+                    onChange={(event) =>  tagPushOrPull(event)}//event to watch whether current element is checked and add to posttags based on that
                   />
                   {CheckIfChecked(tag)}
                 </>
@@ -219,3 +225,27 @@ export const PostForm = () => {
     </>
   );
 };
+
+
+
+
+  // useEffect(
+  //     () => {
+  //         if (posts) {
+
+    //         let newPosts = posts
+    //         if (parseInt(selectedCategory) !== 0) {
+    //             newPosts = posts.filter(post => post.category_id === parseInt(selectedCategory))
+    //         }
+    //         if (parseInt(selectedAuthor) !== 0) {
+    //             newPosts = posts.filter(post => post.author_id === parseInt(selectedAuthor))
+    //         }
+    //         if (parseInt(selectedTag) !== 0) {
+    //             newPosts = posts.filter(post => post.tag_id === parseInt(selectedTag))
+    //         }
+    //         
+    //    }
+    //         setFilteredPosts(newPosts)
+    //
+  //     }, [selectedCategory, selectedAuthor, selectedTag, posts]
+  // )

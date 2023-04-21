@@ -11,3 +11,7 @@
     display: flex;
     align-items: center;
 }
+#getYourSearchAwayFromMyFilter {
+    display: flex;
+    justify-content: space-between;
+}
