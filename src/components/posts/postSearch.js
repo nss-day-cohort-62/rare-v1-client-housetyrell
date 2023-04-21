@@ -1,7 +1,8 @@
 
 export const PostSearch = ({ searchTerms, onSearchTermChange }) => {
-    return (
-      <>
+  return (
+    <>
+      <div>
         <div>Search by post title</div>
         <input type="text" className=""
           value={searchTerms}
@@ -11,7 +12,8 @@ export const PostSearch = ({ searchTerms, onSearchTermChange }) => {
             }
           }
           placeholder="Enter title of post here..." />
-      </>
-    )
-  }
-  
+
+      </div>
+    </>
+  )
+}
