@@ -40,6 +40,8 @@ export const MyPostList = () => {
                             key={post.id}
                             post={post}
                             myListOrMain={true}
+                            renderSwitch = {renderSwitch}
+                            setRenderSwitch = {setSwitch}
                         />
                     </>
                 })

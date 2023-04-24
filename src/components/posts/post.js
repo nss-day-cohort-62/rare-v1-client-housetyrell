@@ -2,9 +2,8 @@ import { Link, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
 import { deletePost } from "./postManager"
 import "./posts.css"
-export const Post = ({ post, myListOrMain }) => {
+export const Post = ({ post, myListOrMain, renderSwitch, setRenderSwitch }) => {
     const [updatePost, setUpdatePost] = useState(false)
-    const [renderSwitch, setSwitch] = useState(false)
     const navigate = useNavigate()
     const localUser = localStorage.getItem('auth_token')
     const localUserObj = JSON.parse(localUser)
@@ -53,7 +52,7 @@ export const Post = ({ post, myListOrMain }) => {
                     <button onClick={
                         () => {
                             if (window.confirm("are you sure?")) {
-                                deletePost(post.id).then(() => setSwitch(!renderSwitch))
+                                deletePost(post.id).then(() => setRenderSwitch(!renderSwitch))
                             }
                         }
                     }>Delete</button>
