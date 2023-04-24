@@ -11,7 +11,7 @@ export const PostForm = () => {
   const [post, setPost] = useState({
     id: 0,
     user_id: 0,
-    category_id:'',
+    category_id: '',
     title: "",
     publication_date: "",
     image_url: "",
@@ -52,43 +52,61 @@ export const PostForm = () => {
   useEffect(() => {
     if (postId) {
       getPostById(postId).then((data) => {
+        data.post_tags = data.post_tags.map((tag) => tag.id)
         setPost(data);
-        setPostTags(data.post_tags)
       });
     }
   }, [postId]);
 
 
-  const CheckIfChecked = (tag)=> {
-    const checked = post.post_tags.find((postTag) => tag.id === postTag.id)
-    
-      return checked
-    
+  const CheckIfChecked = (tag) => {
+
+    let checked = post.post_tags?.find((postTag) => tag.id === postTag)
+    if (checked) {
+      return true
+    }
+    else {
+      return false
+    }
+
+
   }
+
   const handleControlledInputChange = (event) => {
     const newPost = { ...post };
-      newPost[event.target.name] = event.target.value;
-    setPost(newPost);
-  };
- 
-  const tagPushOrPull = (event) => {
-    const newPost = {...post}
     if (event.target.name === "post_tags") {
-      // console.log(postTags)
-      // const selectedTag = postTags.find((tag) => tag === event.target.value)
-      // console.log(selectedTag)
-      console.log(postTags)
-      if (postTags.includes(event.target.value)) {
-        const index = post.post_tags.indexOf(event.target.value);
+      if (newPost.post_tags.includes(parseInt(event.target.value))) {
+        const index = newPost.post_tags.indexOf(parseInt(event.target.value));
+        console.log(index)
         newPost.post_tags.splice(index, 1);
       } else {
         newPost[event.target.name].push(parseInt(event.target.value))
       }
-       }    
-       setPost(newPost)
-      }
 
-      
+    }
+    else {
+      newPost[event.target.name] = event.target.value;
+    }
+    setPost(newPost);
+  };
+  // const tagPushOrPull = (event) => {
+  //   const newPost = {...post}
+  //   if (event.target.name === "post_tags") {
+  //     // console.log(postTags)
+  //     // const selectedTag = postTags.find((tag) => tag === event.target.value)
+  //     // console.log(selectedTag)
+  //     console.log(postTags)
+  //     if (postTags.includes(event.target.value)) {
+  //       const index = post.post_tags.indexOf(event.target.value);
+  //       newPost.post_tags.splice(index, 1);
+  //     } else {
+  //       newPost[event.target.name].push(parseInt(event.target.value))
+  //     }
+  //      }    
+  //      setPost(newPost)
+  //     }
+
+
   const CreateNewPost = () => {
     if (postId) {
       // PUT
@@ -196,14 +214,14 @@ export const PostForm = () => {
                 <>
                   <label>{tag.label}</label>
                   <input
-                    name = "post_tags"
+                    name="post_tags"
                     type="checkbox"
                     key={tag.id}
-                    checked ={CheckIfChecked(tag)}//checked based on boolean state variable
+                    checked={CheckIfChecked(tag)}//checked based on boolean state variable
                     value={tag.id}
-                    onChange={(event) =>  tagPushOrPull(event)}//event to watch whether current element is checked and add to posttags based on that
+                    onChange={handleControlledInputChange}
                   />
-                  {CheckIfChecked(tag)}
+                  {/* {CheckIfChecked(tag)} */}
                 </>
               );
             })}
@@ -243,7 +261,7 @@ export const PostForm = () => {
     //         if (parseInt(selectedTag) !== 0) {
     //             newPosts = posts.filter(post => post.tag_id === parseInt(selectedTag))
     //         }
-    //         
+    //
     //    }
     //         setFilteredPosts(newPosts)
     //
