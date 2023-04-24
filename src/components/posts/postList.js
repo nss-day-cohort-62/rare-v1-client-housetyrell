@@ -46,29 +46,6 @@ export const PostList = () => {
     useEffect(
         () => {
 
-            // if (parseInt(selectedCategory) !== 0) {
-            //     GetPostsByCategory(parseInt(selectedCategory)).then((data) => {
-            //         setPosts(data)
-            //     })
-            // }
-            // else if (parseInt(selectedAuthor) !== 0) {
-            //     GetPostsByUser(parseInt(selectedAuthor)).then((data) => {
-            //         setPosts(data)
-            //     })
-            // }
-            // else if (parseInt(selectedTag) !== 0) {
-            //     GetPostsByTag(parseInt(selectedTag)).then((data) => {
-            //         setPosts(data)
-            //     })
-            // }
-            // else {
-            //     getPosts()
-            //         .then(data => {
-            //             setPosts(data)
-            //         })
-            // }
-            // if(selectedCategory && selectedAuthor ){
-
             if (parseInt(selectedCategory) !== 0 || parseInt(selectedAuthor) !== 0 || parseInt(selectedTag) !== 0) {
                 getPostsByHttpString(queryStrings(selectedCategory, selectedAuthor, selectedTag))
                     .then((data) => { setPosts(data) })
@@ -172,6 +149,7 @@ export const PostList = () => {
                             key={post.id}
                             post={post}
                             myListOrMain={false}
+                        
                         />
                     </>
                 })
