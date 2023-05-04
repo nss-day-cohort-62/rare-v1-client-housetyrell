@@ -65,10 +65,10 @@ export const PostList = () => {
         let httpString = []
 
         if (parseInt(selectedCategory) !== 0) {
-            httpString.push(`category_id=${parseInt(selectedCategory)}`)
+            httpString.push(`category=${parseInt(selectedCategory)}`)
         }
         if (parseInt(selectedAuthor) !== 0) {
-            httpString.push(`user_id=${parseInt(selectedAuthor)}`)
+            httpString.push(`author=${parseInt(selectedAuthor)}`)
         }
         if (parseInt(selectedTag) !== 0) {
             httpString.push(`tag_id=${parseInt(selectedTag)}`)
@@ -118,7 +118,7 @@ export const PostList = () => {
                             users.map(user => {
                                 return (
                                     <option key={user.id} value={parseInt(user.id)}>
-                                        {user.first_name}
+                                        {user.full_name}
                                     </option>
                                 )
                             })

@@ -8,6 +8,8 @@ export const getPosts = () => {
   }).then((res) => res.json());
 };
 
+
+
 export const getPostById = (id) => {
   return fetch(`http://localhost:8000/posts/${id}`, {
     headers: {
@@ -21,7 +23,6 @@ export const addPost = (newPost) => {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "Accept": "application/json",
       "Authorization": `Token ${localStorage.getItem("auth_token")}`
     },
     body: JSON.stringify(newPost)

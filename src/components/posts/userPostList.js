@@ -12,7 +12,7 @@ export const MyPostList = () => {
         () => {
             getPosts()
                 .then(data => {
-                    const currentUserPosts = data.filter(post => post.user_id === localUser)
+                    const currentUserPosts = data.filter(post => post.user?.id === parseInt(localUser))
                     setPosts(currentUserPosts)
                 })
         },
