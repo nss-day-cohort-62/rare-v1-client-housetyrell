@@ -12,20 +12,19 @@ export const UserDetails = () => {
     
     const { userId } = useParams()
     const navigate = useNavigate()
-    const localUser = localStorage.getItem("auth_token");
-    const localUserObj = JSON.parse(localUser);
+    const localUser = localStorage.getItem("userId");
     useEffect(
         () => {
             getUserById(userId)
                 .then((data) => {
                     setUser(data)
                 })
-            GetAllSubscriptions(localUserObj).then((data) => { setSubscriptions(data) })
+            GetAllSubscriptions(localUser).then((data) => { setSubscriptions(data) })
         }, [userId]
     )
     useEffect(
         () => {
-            const subscribed = subscriptions.find((s) => s.author_id === parseInt(userId) && localUserObj === s.follower_id)
+            const subscribed = subscriptions.find((s) => s.author_id === parseInt(userId) && localUser === s.follower_id)
             setSubscribed(subscribed)
         }, [subscriptions, userId]
     )
@@ -37,23 +36,20 @@ export const UserDetails = () => {
 
     const CreateNewSubscriptionOrDelete= () => {
         !subscribed ? addNewSubscription({
-            follower_id: localUserObj,
+            follower_id: localUser,
             author_id: userId,
             created_on: new Date().toLocaleDateString()
         }).then(() => navigate("/"))
         : deleteSubscription(subscribed.id)
-        .then(() =>  GetAllSubscriptions(localUserObj).then((data) => { setSubscriptions(data) }))
+        .then(() =>  GetAllSubscriptions(localUser).then((data) => { setSubscriptions(data) }))
         .then(() => navigate(`/userDetails/${userId}`))
     }
     
     return <>
         <article className="userDetails">
-            <div>{user.first_name} {user.last_name}</div>
-            <div>{user?.profile_image}</div>
-            <div>{user.username}</div>
+            <div>{user.user?.first_name} {user.user?.last_name}</div>
+            <div>{user.user?.username}</div>
             <div>{user.bio}</div>
-            <div>{user.created_on}</div>
-            
             <button onClick={(evt) => {
                 evt.preventDefault();
                 CreateNewSubscriptionOrDelete()
