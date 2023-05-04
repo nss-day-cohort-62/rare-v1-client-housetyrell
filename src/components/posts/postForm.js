@@ -25,8 +25,8 @@ export const PostForm = () => {
   const [tags, setTags] = useState([]);
   const [postTags, setPostTags] = useState([])
   const navigate = useNavigate();
-  const localUser = localStorage.getItem("auth_token");
-  const localUserObj = JSON.parse(localUser);
+  const localUser = localStorage.getItem("userId");
+  // const localUserObj = JSON.parse(localUser);
 
   //need state variable to fill in checked value on checkboxes
   //need to have state based array that watches for incoming posttags on post and populating with values
@@ -112,7 +112,7 @@ export const PostForm = () => {
       // PUT
       updatePost({
         id: post.id,
-        user_id: localUserObj,
+        user_id: localUser,
         category_id: post.category_id,
         title: post.title,
         publication_date: post.publication_date,
@@ -123,7 +123,7 @@ export const PostForm = () => {
       }).then(() => navigate(`/postDetails/${postId}`));
     } else {
       addPost({
-        user_id: localUserObj,
+        user_id: localUser,
         category_id: parseInt(post.category_id),
         title: post.title,
         publication_date: new Date().toLocaleDateString(),

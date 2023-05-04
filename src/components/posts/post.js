@@ -6,7 +6,9 @@ export const Post = ({ post, myListOrMain, renderSwitch, setRenderSwitch }) => {
     const [updatePost, setUpdatePost] = useState(false)
     const navigate = useNavigate()
     const localUser = localStorage.getItem('auth_token')
-    const localUserObj = JSON.parse(localUser)
+    // const localUserObj = JSON.parse(localUser)
+    // console.log(localStorage)
+    // console.log(localUserObj)
     // console.log(parseInt(localUserObj))
     // console.log(parseInt(post.user_id))
     // const updatePostFunction = () => {
@@ -40,7 +42,7 @@ export const Post = ({ post, myListOrMain, renderSwitch, setRenderSwitch }) => {
                         {postTag.label}
                     </>
             })}</div>
-            {parseInt(localUserObj) === post.user_id && myListOrMain === true ?
+            {parseInt(localUser) === post.user_id && myListOrMain === true ?
                 <>
                     <button onClick={
                         () => {
