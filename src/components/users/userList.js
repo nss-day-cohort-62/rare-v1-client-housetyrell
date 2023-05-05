@@ -18,7 +18,7 @@ export const UserList = () => {
                 return(
                     <div className="individual_user">
                      <h2>{user.user.username}</h2> 
-                    <Link to={`/userDetails/${user.id}`}><div>{user.user.first_name} {user.user.last_name}</div> </Link>
+                    <Link to={`/userDetails/${user.id}`}><div>{user.full_name}</div> </Link>
                     <div>{user.user.email}</div>
                     </div>
                 )

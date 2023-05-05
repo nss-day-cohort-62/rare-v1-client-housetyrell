@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { getAllUsers, getUserById } from "./UserManager"
+import { getAllUsers, getUserById, subscribeToUser, unsubscribeFromUser } from "./UserManager"
 import { useNavigate, useParams } from "react-router-dom"
 import { addNewSubscription } from "./UserManager"
 import { GetAllSubscriptions } from "../posts/postManager"
@@ -7,9 +7,10 @@ import { deleteSubscription } from "../posts/postManager"
 
 export const UserDetails = () => {
     const [user, setUser] = useState({})
+    const [signedInUser, setUserSignedIn] = useState({})
     const [subscriptions, setSubscriptions] = useState([])
-    const [subscribed, setSubscribed] = useState({})
-    
+    const [subscribed, setSubscribed] = useState(false)
+
     const { userId } = useParams()
     const navigate = useNavigate()
     const localUser = localStorage.getItem("userId");
@@ -19,41 +20,44 @@ export const UserDetails = () => {
                 .then((data) => {
                     setUser(data)
                 })
-            GetAllSubscriptions(localUser).then((data) => { setSubscriptions(data) })
+            getUserById(localUser)
+                .then(data => setUserSignedIn(data))
+            // GetAllSubscriptions(localUser).then((data) => { setSubscriptions(data) })
         }, [userId]
     )
-    useEffect(
-        () => {
-            const subscribed = subscriptions.find((s) => s.author_id === parseInt(userId) && localUser === s.follower_id)
-            setSubscribed(subscribed)
-        }, [subscriptions, userId]
-    )
+    // useEffect(
+    //     () => {
+    //         // const subscribed = signedInUser.subscribed
+    //         if (user.subscribed === 1) {
+    //             setSubscribed(!subscribed)
+    //         }
+    //     }, [userId]
+    // )
+    console.log(signedInUser.subscribed)
     // useEffect(
     //     () => {
     //         CreateNewSubscriptionOrDelete()
     //     }, [subscribed]
     // )
 
-    const CreateNewSubscriptionOrDelete= () => {
-        !subscribed ? addNewSubscription({
-            follower_id: localUser,
-            author_id: userId,
-            created_on: new Date().toLocaleDateString()
-        }).then(() => navigate("/"))
-        : deleteSubscription(subscribed.id)
-        .then(() =>  GetAllSubscriptions(localUser).then((data) => { setSubscriptions(data) }))
-        .then(() => navigate(`/userDetails/${userId}`))
+    const CreateNewSubscriptionOrDelete = () => {
+        const date = {
+            created_on: new Date().toISOString().split('T')[0]
+        }
+        user.subscribed === 0 ? subscribeToUser(date, userId).then(() => navigate("/"))
+            : unsubscribeFromUser(userId)
+                .then(() => navigate(`/`))
     }
-    
+
     return <>
         <article className="userDetails">
-            <div>{user.user?.first_name} {user.user?.last_name}</div>
-            <div>{user.user?.username}</div>
+            <div>{user.full_name}</div>
+            <div>{user.username}</div>
             <div>{user.bio}</div>
             <button onClick={(evt) => {
                 evt.preventDefault();
                 CreateNewSubscriptionOrDelete()
-            }}>{!subscribed ? "Subscribe" : "Unsubscribe"}</button>
+            }}>{user.subscribed === 0 ? "Subscribe" : "Unsubscribe"}</button>
         </article>
     </>
 }
