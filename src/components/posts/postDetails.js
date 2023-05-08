@@ -26,7 +26,7 @@ export const PostDetails = () => {
             <div>{post.category?.label}</div>
             <p>{post.content}</p>
             {
-                post?.post_with_tags?.map((tag) => {
+                post?.tags?.map((tag) => {
                     return <>
                     <div>{tag.label}</div>
                     </>

@@ -46,8 +46,8 @@ export const PostList = () => {
     useEffect(
         () => {
 
-            if (parseInt(selectedCategory) !== 0 || parseInt(selectedAuthor) !== 0 || parseInt(selectedTag) !== 0) {
-                getPostsByHttpString(queryStrings(selectedCategory, selectedAuthor, selectedTag))
+            if (parseInt(selectedCategory) !== 0 || parseInt(selectedAuthor) !== 0 || parseInt(selectedTag) !== 0 || searchTerm.length > 1)  {
+                getPostsByHttpString(queryStrings(selectedCategory, selectedAuthor, selectedTag, searchTerm))
                     .then((data) => { setPosts(data) })
             }
            
@@ -58,10 +58,10 @@ export const PostList = () => {
                     })
             }
 
-        }, [selectedCategory, selectedAuthor, selectedTag]
+        }, [selectedCategory, selectedAuthor, selectedTag, searchTerm]
     )
 
-    const queryStrings = (selectedCategory, selectedAuthor, selectedTag) => {
+    const queryStrings = (selectedCategory, selectedAuthor, selectedTag, searchTerm) => {
         let httpString = []
 
         if (parseInt(selectedCategory) !== 0) {
@@ -71,7 +71,10 @@ export const PostList = () => {
             httpString.push(`author=${parseInt(selectedAuthor)}`)
         }
         if (parseInt(selectedTag) !== 0) {
-            httpString.push(`tag_id=${parseInt(selectedTag)}`)
+            httpString.push(`tag=${parseInt(selectedTag)}`)
+        }
+        if (searchTerm.length > 1) {
+            httpString.push(`title=${searchTerm}`)
         }
         let newString = httpString.join("&")
         console.log(newString)
@@ -81,13 +84,13 @@ export const PostList = () => {
 
 
 
-    useEffect(() => {
-        if (searchTerm.length > 1) {
-            getPostsBySearch(searchTerm).then((posts) => setPosts(posts))
-        } else {
-            getPosts().then((posts) => setPosts(posts))
-        }
-    }, [searchTerm])
+    // useEffect(() => {
+    //     if (searchTerm.length > 1) {
+    //         getPostsByHttpString(searchTerm).then((posts) => setPosts(posts))
+    //     } else {
+    //         getPosts().then((posts) => setPosts(posts))
+    //     }
+    // }, [searchTerm])
 
     const onSearchTermChange = (value) => {
         setSearchTerm(value)
