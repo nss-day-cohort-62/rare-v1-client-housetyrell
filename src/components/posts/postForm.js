@@ -11,13 +11,13 @@ export const PostForm = () => {
   const [post, setPost] = useState({
     id: 0,
     user_id: 0,
-    category_id: '',
+    category: 0,
     title: "",
     publication_date: "",
     image_url: "",
     content: "",
     approved: 1,
-    post_tags: []
+    tags: []
   });
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -53,7 +53,8 @@ export const PostForm = () => {
   useEffect(() => {
     if (postId) {
       getPostById(parseInt(postId)).then((data) => {
-        // data.post_tags = data.post_tags.map((tag) => tag.id)
+        data.tags = data.tags.map((tag) => tag.id)
+        data.category = data.category.id
         setPost(data);
       });
     }
@@ -61,8 +62,8 @@ export const PostForm = () => {
 
 
   const CheckIfChecked = (tag) => {
-
-    let checked = post.post_tags?.find((postTag) => tag.id === postTag)
+    const copy = { ...post }
+    let checked = copy?.tags?.find((postTag) => tag.id === postTag)
     if (checked) {
       return true
     }
@@ -75,11 +76,11 @@ export const PostForm = () => {
 
   const handleControlledInputChange = (event) => {
     const newPost = { ...post };
-    if (event.target.name === "post_tags") {
-      if (newPost.post_tags.includes(parseInt(event.target.value))) {
-        const index = newPost.post_tags.indexOf(parseInt(event.target.value));
+    if (event.target.name === "tags") {
+      if (newPost.tags.includes(parseInt(event.target.value))) {
+        const index = newPost.tags.indexOf(parseInt(event.target.value));
         console.log(index)
-        newPost.post_tags.splice(index, 1);
+        newPost.tags.splice(index, 1);
       } else {
         newPost[event.target.name].push(parseInt(event.target.value))
       }
@@ -114,24 +115,24 @@ export const PostForm = () => {
       updatePost({
         id: post.id,
         user: parseInt(localUser),
-        category: post.category,
+        category: parseInt(post.category),
         title: post.title,
         publication_date: post.publication_date,
         image_url: post.image_url,
         content: post.content,
-        approved: true
-        // post_tags: post.post_tags
+        approved: true,
+        tags: post.tags
       }).then(() => navigate(`/postDetails/${postId}`));
     } else {
       addPost({
         user: parseInt(localUser),
-        category: parseInt(post.category_id),
+        category: parseInt(post.category),
         title: post.title,
         publication_date: new Date().toISOString().split('T')[0],
         image_url: post.image_url,
         content: post.content,
-        approved: true 
-  
+        approved: true,
+        tags: post.tags
       })
         .then((res) => res.json())
         .then((data) => navigate(`/postDetails/${data.id}`));
@@ -147,7 +148,7 @@ export const PostForm = () => {
             <label htmlFor="">Category</label>
             <select
               name="category"
-              value={post.category?.id}
+              value={post.category}
               onChange={handleControlledInputChange}
             >
               <option value="0"> Choose a category</option>
@@ -215,7 +216,7 @@ export const PostForm = () => {
                 <>
                   <label>{tag.label}</label>
                   <input
-                    name="post_tags"
+                    name="tags"
                     type="checkbox"
                     key={tag.id}
                     checked={CheckIfChecked(tag)}//checked based on boolean state variable
