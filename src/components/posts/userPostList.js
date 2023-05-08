@@ -6,13 +6,13 @@ import { getPosts, deletePost, updatePost } from "./postManager";
 export const MyPostList = () => {
     const [posts, setPosts] = useState([])
     const [renderSwitch, setSwitch] = useState(false)
-    const localUser = localStorage.getItem('auth_token')
-    const localUserObj = JSON.parse(localUser)
+    const localUser = localStorage.getItem('userId')
+    // const localUserObj = JSON.parse(localUser)
     useEffect(
         () => {
             getPosts()
                 .then(data => {
-                    const currentUserPosts = data.filter(post => post.user_id === localUserObj)
+                    const currentUserPosts = data.filter(post => post.user?.id === parseInt(localUser))
                     setPosts(currentUserPosts)
                 })
         },
