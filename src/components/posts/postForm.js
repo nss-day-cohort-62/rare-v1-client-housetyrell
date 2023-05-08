@@ -25,9 +25,8 @@ export const PostForm = () => {
   const [tags, setTags] = useState([]);
   const [postTags, setPostTags] = useState([])
   const navigate = useNavigate();
-  const localUser = localStorage.getItem("userId");
- 
-  // const localUserObj = JSON.parse(localUser);
+  const localUser = localStorage.getItem("auth_token");
+  const localUserObj = JSON.parse(localUser);
 
   //need state variable to fill in checked value on checkboxes
   //need to have state based array that watches for incoming posttags on post and populating with values
@@ -52,8 +51,8 @@ export const PostForm = () => {
 
   useEffect(() => {
     if (postId) {
-      getPostById(parseInt(postId)).then((data) => {
-        // data.post_tags = data.post_tags.map((tag) => tag.id)
+      getPostById(postId).then((data) => {
+        data.post_tags = data.post_tags.map((tag) => tag.id)
         setPost(data);
       });
     }
@@ -113,25 +112,25 @@ export const PostForm = () => {
       // PUT
       updatePost({
         id: post.id,
-        user: parseInt(localUser),
-        category: post.category,
+        user_id: localUserObj,
+        category_id: post.category_id,
         title: post.title,
         publication_date: post.publication_date,
         image_url: post.image_url,
         content: post.content,
-        approved: true
-        // post_tags: post.post_tags
+        approved: 1,
+        post_tags: post.post_tags
       }).then(() => navigate(`/postDetails/${postId}`));
     } else {
       addPost({
-        user: parseInt(localUser),
-        category: parseInt(post.category_id),
+        user_id: localUserObj,
+        category_id: parseInt(post.category_id),
         title: post.title,
-        publication_date: new Date().toISOString().split('T')[0],
+        publication_date: new Date().toLocaleDateString(),
         image_url: post.image_url,
         content: post.content,
-        approved: true 
-  
+        approved: 1,
+        post_tags: post.post_tags
       })
         .then((res) => res.json())
         .then((data) => navigate(`/postDetails/${data.id}`));
@@ -146,8 +145,8 @@ export const PostForm = () => {
           <div className="">
             <label htmlFor="">Category</label>
             <select
-              name="category"
-              value={post.category?.id}
+              name="category_id"
+              value={post.category_id}
               onChange={handleControlledInputChange}
             >
               <option value="0"> Choose a category</option>

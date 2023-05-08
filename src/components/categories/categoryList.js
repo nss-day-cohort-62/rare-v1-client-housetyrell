@@ -22,7 +22,8 @@ export const CategoryList = () => {
           return (
             <>
               <div>{category.label}</div>
-              <button>Edit</button><button>Delete</button>
+              <button>Edit</button>
+              <button>Delete</button>
             </>
           );
         })}
