@@ -17,9 +17,9 @@ export const UserList = () => {
             users.map((user) => {
                 return(
                     <div className="individual_user">
-                     <h2>{user.user.username}</h2> 
-                    <Link to={`/userDetails/${user.id}`}><div>{user.full_name}</div> </Link>
-                    <div>{user.user.email}</div>
+                     <h2>{user.username}</h2> 
+                    <Link to={`/userDetails/${user.id}`}><div>{user.first_name} {user.last_name}</div> </Link>
+                    <div>{user.email}</div>
                     </div>
                 )
             })

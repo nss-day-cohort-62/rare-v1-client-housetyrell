@@ -5,11 +5,8 @@ import "./posts.css"
 export const Post = ({ post, myListOrMain, renderSwitch, setRenderSwitch }) => {
     const [updatePost, setUpdatePost] = useState(false)
     const navigate = useNavigate()
-    const localUser = localStorage.getItem('userId')
-    
-    // const localUserObj = JSON.parse(localUser)
-    // console.log(localStorage)
-    // console.log(localUserObj)
+    const localUser = localStorage.getItem('auth_token')
+    const localUserObj = JSON.parse(localUser)
     // console.log(parseInt(localUserObj))
     // console.log(parseInt(post.user_id))
     // const updatePostFunction = () => {
@@ -34,7 +31,7 @@ export const Post = ({ post, myListOrMain, renderSwitch, setRenderSwitch }) => {
     return <>
         <section className="individualPost">
             <Link to={`/postDetails/${post.id}`}><h2>{post.title}</h2></Link>
-            <div>{post.user.full_name}</div>
+            <div>{post.user?.first_name} {post.user?.last_name}</div>
             <div>{post.publication_date}</div>
             <div>{post.category?.label}</div>
             <div>{post?.post_tags?.map((postTag) => {
@@ -43,7 +40,7 @@ export const Post = ({ post, myListOrMain, renderSwitch, setRenderSwitch }) => {
                         {postTag.label}
                     </>
             })}</div>
-            {post.user?.id === parseInt(localUser) && myListOrMain === true ?
+            {parseInt(localUserObj) === post.user_id && myListOrMain === true ?
                 <>
                     <button onClick={
                         () => {
@@ -54,7 +51,7 @@ export const Post = ({ post, myListOrMain, renderSwitch, setRenderSwitch }) => {
                     }>Edit</button>
                     <button onClick={
                         () => {
-                            if (window.confirm("Are you sure you want to delete this post?")) {
+                            if (window.confirm("are you sure?")) {
                                 deletePost(post.id).then(() => setRenderSwitch(!renderSwitch))
                             }
                         }

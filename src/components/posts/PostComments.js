@@ -7,8 +7,8 @@ import { deleteComment } from "./commentManager"
 export const PostComments = () => {
     const { postId } = useParams()
     const [post, setPost] = useState({})
-    const localUser = localStorage.getItem("userId");
-    // const localUserObj = JSON.parse(localUser);
+    const localUser = localStorage.getItem("auth_token");
+    const localUserObj = JSON.parse(localUser);
 
     useEffect(
         () => {
@@ -19,9 +19,9 @@ export const PostComments = () => {
         },
         [postId]
     )
-    console.log(post)
+
     const deleteIcon = (comment) => {
-        if (comment.author_id === parseInt(localUser)) {
+        if (comment.author_id === parseInt(localUserObj)) {
             return <>
                 <svg onClick={() => deleteComment(comment.id).then(() => getPostById(parseInt(postId))
                             .then((data) => {
